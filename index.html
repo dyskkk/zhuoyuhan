@@ -1,0 +1,1826 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>卓予涵 · 境随心转</title>
+<meta name="description" content="卓予涵的个人主页 · A personal page of Zhuo Yuhan">
+<style>
+/* ============================================================
+   0. 变量 / Design tokens
+   ============================================================ */
+:root{
+  --cream:      #FBF2E1;
+  --cream-2:    #F6E7CB;
+  --cream-3:    #EFDDBB;
+  --ink:        #4A3B32;
+  --ink-soft:   #8B7768;
+  --ink-faint:  #B8A695;
+  --white:      #FFFDF8;
+
+  --pink:       #F58BA8;
+  --pink-soft:  #FDE3EA;
+  --peach:      #FFB27A;
+  --lemon:      #FFD166;
+  --mint:       #7FD8C8;
+  --lilac:      #B9A7E8;
+  --sky:        #8FC7F2;
+
+  --shadow-sm: 0 4px 14px rgba(122, 96, 66, .10);
+  --shadow-md: 0 10px 30px rgba(122, 96, 66, .13);
+  --shadow-lg: 0 22px 60px rgba(122, 96, 66, .18);
+
+  --radius-sm: 12px;
+  --radius:    20px;
+  --radius-lg: 30px;
+
+  --font-cn: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Source Han Sans SC", "Noto Sans SC", sans-serif;
+  --font-en: "Avenir Next", "Helvetica Neue", "Segoe UI", system-ui, sans-serif;
+
+  --ease: cubic-bezier(.22,.68,.28,1);
+}
+
+/* ============================================================
+   1. 基础 / Base
+   ============================================================ */
+*, *::before, *::after{ box-sizing: border-box; }
+
+html{ -webkit-text-size-adjust: 100%; }
+
+body{
+  margin: 0;
+  min-height: 100vh;
+  font-family: var(--font-cn);
+  color: var(--ink);
+  background-color: var(--cream);
+  background-image:
+    radial-gradient(circle at 12% 8%,  rgba(255,209,102,.26), transparent 44%),
+    radial-gradient(circle at 88% 4%,  rgba(245,139,168,.20), transparent 42%),
+    radial-gradient(circle at 78% 92%, rgba(127,216,200,.22), transparent 46%),
+    radial-gradient(circle at 6% 82%,  rgba(185,167,232,.18), transparent 44%),
+    radial-gradient(rgba(139,119,104,.10) 1px, transparent 1px);
+  background-size: auto, auto, auto, auto, 22px 22px;
+  background-attachment: fixed;
+  overflow-x: hidden;
+  line-height: 1.75;
+  letter-spacing: .01em;
+}
+
+img{ display: block; max-width: 100%; }
+button{ font: inherit; color: inherit; }
+
+.en{
+  font-family: var(--font-en);
+  letter-spacing: .04em;
+  font-weight: 400;
+}
+
+.sr-only{
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+:focus-visible{
+  outline: 3px dashed var(--pink);
+  outline-offset: 4px;
+  border-radius: 6px;
+}
+.layer:focus{ outline: none; }
+
+/* ============================================================
+   2. 层级切换 / Layers
+   ============================================================ */
+.layer{
+  display: none;
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+}
+.layer.is-active{
+  display: block;
+  animation: layer-in .62s var(--ease) both;
+}
+@keyframes layer-in{
+  from{ opacity: 0; transform: translateY(18px) scale(.995); }
+  to  { opacity: 1; transform: none; }
+}
+
+/* ============================================================
+   3. 封面 / Cover
+   ============================================================ */
+#layer-cover{ overflow: hidden; }
+
+/* 背景里散落的 Dimoo 手办 */
+.cover-toys{ position: absolute; inset: 0; pointer-events: none; }
+.cover-toys img{
+  position: absolute;
+  width: clamp(66px, 9vw, 126px);
+  height: auto;
+  opacity: .95;
+  filter: drop-shadow(0 10px 18px rgba(122,96,66,.16));
+  animation: float-y 9s ease-in-out infinite;
+}
+.cover-toys img:nth-child(1){ left: 5%;  top: 14%; animation-delay: -1s;   width: clamp(80px, 11vw, 148px); }
+.cover-toys img:nth-child(2){ right: 6%; top: 10%; animation-delay: -3.4s; }
+.cover-toys img:nth-child(3){ left: 9%;  bottom: 16%; animation-delay: -2.2s; }
+.cover-toys img:nth-child(4){ right: 8%; bottom: 20%; animation-delay: -5.1s; width: clamp(74px, 10vw, 136px); }
+.cover-toys img:nth-child(5){ left: 20%; top: 42%; animation-delay: -6.3s; width: clamp(52px, 6.4vw, 92px); opacity: .8; }
+.cover-toys img:nth-child(6){ right: 19%; top: 44%; animation-delay: -4.2s; width: clamp(54px, 6.8vw, 96px); opacity: .8; }
+
+@keyframes float-y{
+  0%, 100%{ transform: translateY(0) rotate(-1.5deg); }
+  50%     { transform: translateY(-14px) rotate(1.8deg); }
+}
+
+/* 会说话的 Dimoo 头部 */
+.head-pet{
+  position: absolute;
+  width: clamp(52px, 6.2vw, 88px);
+  height: auto;
+  cursor: pointer;
+  border: 0; background: none; padding: 0;
+  filter: drop-shadow(0 8px 14px rgba(122,96,66,.20));
+  transition: transform .28s var(--ease);
+  animation: float-y 7s ease-in-out infinite;
+  z-index: 3;
+}
+.head-pet:hover, .head-pet:focus-visible{ transform: scale(1.12) rotate(-4deg); }
+.head-pet.cat{ left: 3%;  top: 62%; animation-delay: -2.8s; }
+.head-pet.dog{ right: 3%; top: 58%; animation-delay: -1.4s; }
+
+.pet-bubble{
+  position: absolute;
+  max-width: 210px;
+  padding: 10px 14px;
+  background: var(--white);
+  border: 2px solid var(--ink);
+  border-radius: 16px 16px 16px 4px;
+  font-size: .82rem;
+  line-height: 1.5;
+  box-shadow: var(--shadow-sm);
+  opacity: 0;
+  transform: translateY(6px) scale(.94);
+  pointer-events: none;
+  transition: opacity .26s var(--ease), transform .26s var(--ease);
+  z-index: 4;
+}
+.pet-bubble.is-open{ opacity: 1; transform: none; }
+.pet-bubble .en{ display: block; color: var(--ink-soft); font-size: .72rem; margin-top: 2px; }
+.pet-bubble.cat{ left: clamp(56px, 10vw, 122px); top: 62%; }
+.pet-bubble.dog{ right: clamp(56px, 10vw, 122px); top: 57%; }
+
+/* 封面主体 */
+.cover-inner{
+  position: relative;
+  z-index: 2;
+  min-height: 100vh;
+  max-width: 980px;
+  margin: 0 auto;
+  padding: clamp(26px, 5vh, 50px) 22px clamp(22px, 4vh, 38px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* 照片：白边 + 胶带 */
+.portrait{
+  position: relative;
+  width: clamp(158px, 19.5vw, 226px);
+  margin-bottom: clamp(16px, 2.6vh, 28px);
+  transform: rotate(-2.2deg);
+  transition: transform .5s var(--ease);
+}
+.portrait:hover{ transform: rotate(0deg) scale(1.02); }
+.portrait img{
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  object-position: center 20%;
+  border-radius: 16px;
+  border: 7px solid var(--white);
+  box-shadow: var(--shadow-lg);
+}
+.portrait::before,
+.portrait::after{
+  content: "";
+  position: absolute;
+  width: 74px; height: 22px;
+  background: rgba(255, 209, 102, .72);
+  border-left: 1px dashed rgba(122,96,66,.28);
+  border-right: 1px dashed rgba(122,96,66,.28);
+  box-shadow: 0 2px 6px rgba(122,96,66,.10);
+}
+.portrait::before{ left: -22px; top: 26px; transform: rotate(-32deg); }
+.portrait::after { right: -22px; bottom: 40px; transform: rotate(-28deg); background: rgba(127,216,200,.6); }
+
+/* 名字 */
+.name-cn{
+  margin: 0;
+  font-size: clamp(2.05rem, 6vw, 3.3rem);
+  font-weight: 600;
+  letter-spacing: .16em;
+  text-indent: .16em;
+  line-height: 1.2;
+}
+.name-en{
+  margin: 8px 0 0;
+  font-size: clamp(.68rem, 1.7vw, .82rem);
+  letter-spacing: .42em;
+  text-indent: .42em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.slogan{
+  position: relative;
+  margin: clamp(11px, 2vh, 18px) 0 0;
+  font-size: clamp(1.24rem, 3.2vw, 1.7rem);
+  font-weight: 500;
+  letter-spacing: .3em;
+  text-indent: .3em;
+  padding: 0 .3em;
+}
+.slogan::after{
+  content: "";
+  display: block;
+  width: 46px;
+  height: 2px;
+  margin: 10px auto 0;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--pink), var(--lemon));
+  opacity: .85;
+}
+.slogan-en{
+  display: block;
+  margin-top: 8px;
+  font-size: clamp(.74rem, 1.85vw, .88rem);
+  font-style: italic;
+  letter-spacing: .06em;
+  color: var(--ink-soft);
+}
+
+.tagline{
+  max-width: 30em;
+  margin: clamp(9px, 1.6vh, 14px) auto 0;
+  font-size: clamp(.88rem, 2.2vw, 1rem);
+  color: var(--ink-soft);
+  line-height: 1.85;
+}
+.tagline .en{ display: block; font-size: .8rem; margin-top: 3px; opacity: .82; }
+
+/* 小方块按钮 */
+.enter-btn{
+  margin-top: clamp(20px, 3.2vh, 32px);
+  padding: 14px 24px;
+  background: var(--white);
+  border: 2.5px solid var(--ink);
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: clamp(.82rem, 2.1vw, .92rem);
+  letter-spacing: .1em;
+  box-shadow: 5px 5px 0 var(--ink);
+  transition: transform .18s var(--ease), box-shadow .18s var(--ease), background .18s var(--ease);
+}
+.enter-btn .en{
+  display: block;
+  font-size: .72rem;
+  letter-spacing: .16em;
+  color: var(--ink-soft);
+  margin-top: 2px;
+}
+.enter-btn:hover, .enter-btn:focus-visible{
+  background: var(--lemon);
+  transform: translate(-2px, -2px);
+  box-shadow: 7px 7px 0 var(--ink);
+}
+.enter-btn:active{
+  transform: translate(3px, 3px);
+  box-shadow: 2px 2px 0 var(--ink);
+}
+
+/* ============================================================
+   4. 人生进度条 / Life progress
+   ============================================================ */
+.life{
+  width: min(720px, 100%);
+  margin-top: clamp(20px, 3.4vh, 36px);
+  text-align: left;
+}
+.life-head{
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 6px;
+  font-size: .78rem;
+  color: var(--ink-soft);
+  letter-spacing: .08em;
+}
+.life-head b{ color: var(--ink); font-weight: 600; }
+.life-head .ttl{ color: var(--ink); font-weight: 600; }
+.life-head .en{ color: var(--ink-faint); font-size: .72rem; }
+
+.life-bar{
+  position: relative;
+  height: 15px;
+  border-radius: 999px;
+  background: var(--cream-3);
+  border: 2px solid rgba(122,96,66,.22);
+  box-shadow: inset 0 2px 5px rgba(122,96,66,.12);
+}
+.life-fill{
+  position: relative;
+  height: 100%;
+  width: 0%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--mint) 0%, var(--sky) 30%, var(--pink) 68%, var(--peach) 100%);
+  transition: width 1.5s var(--ease);
+}
+.life-fill::after{
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background-image: repeating-linear-gradient(115deg, rgba(255,255,255,.32) 0 8px, transparent 8px 16px);
+  animation: stripes 6s linear infinite;
+}
+@keyframes stripes{ to{ background-position: 60px 0; } }
+
+/* 刻度 */
+.life-ticks{ position: absolute; inset: 0; }
+.life-tick{
+  position: absolute;
+  top: 50%;
+  width: 2px;
+  height: 21px;
+  margin-top: -10px;
+  background: rgba(122,96,66,.34);
+  border-radius: 2px;
+  transform: translateX(-1px);
+}
+.life-tick.major{ background: rgba(122,96,66,.62); height: 27px; margin-top: -13px; }
+
+/* 站在进度上的 Dimoo */
+.life-walker{
+  position: absolute;
+  left: 0%;
+  bottom: calc(100% + 2px);
+  width: clamp(40px, 6vw, 58px);
+  transform: translateX(-50%);
+  transition: left 1.5s var(--ease);
+  animation: walker-bob 2.6s ease-in-out infinite;
+  filter: drop-shadow(0 6px 10px rgba(122,96,66,.22));
+}
+@keyframes walker-bob{
+  0%, 100%{ transform: translate(-50%, 0) rotate(-2deg); }
+  50%     { transform: translate(-50%, -5px) rotate(2deg); }
+}
+
+/* 进度说明 */
+.life-now{
+  margin: 12px 0 0;
+  font-size: .84rem;
+  color: var(--ink);
+  text-align: center;
+  line-height: 1.9;
+}
+.life-now .pct{
+  font-family: var(--font-en);
+  font-weight: 700;
+  color: var(--pink);
+  font-size: 1rem;
+}
+.life-now .en{ display: block; color: var(--ink-soft); font-size: .76rem; }
+
+.stage-chips{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+  margin-top: 12px;
+}
+.stage-chip{
+  padding: 3px 10px;
+  font-size: .7rem;
+  border-radius: 999px;
+  border: 1px dashed rgba(122,96,66,.32);
+  color: var(--ink-soft);
+  background: rgba(255,253,248,.6);
+  letter-spacing: .06em;
+}
+.stage-chip.on{
+  border-style: solid;
+  border-color: var(--ink);
+  background: var(--ink);
+  color: var(--cream);
+}
+
+/* ============================================================
+   5. 第二层：树干 / Tree
+   ============================================================ */
+#layer-tree{ padding: clamp(38px, 7vh, 70px) 0 clamp(40px, 8vh, 80px); }
+
+.tree-head{ position: relative; text-align: center; padding: 0 20px; margin-bottom: clamp(8px, 1.6vh, 18px); }
+.tree-head h2{
+  margin: 0;
+  font-size: clamp(1.05rem, 2.6vw, 1.32rem);
+  letter-spacing: .18em;
+  text-indent: .2em;
+  font-weight: 600;
+}
+.tree-head p{
+  margin: 6px 0 0;
+  font-size: .8rem;
+  color: var(--ink-soft);
+  letter-spacing: .08em;
+}
+
+.tree{
+  position: relative;
+  width: min(760px, 100%);
+  margin: 0 auto;
+  padding: 0 18px;
+}
+
+/* 两侧点缀手办（宽屏才显示） */
+.tree-deco{ position: absolute; inset: 0; pointer-events: none; }
+.tree-deco img{
+  position: absolute;
+  width: clamp(96px, 8.4vw, 132px);
+  height: auto;
+  opacity: .5;
+  filter: drop-shadow(0 16px 20px rgba(122,96,66,.16));
+}
+.tree-deco .td-1{ left: 3%;  top: 12%; animation: floaty 7.5s ease-in-out infinite; }
+.tree-deco .td-2{ left: 8%;  bottom: 14%; width: clamp(80px, 6.8vw, 108px); animation: floaty 9s ease-in-out infinite reverse; }
+.tree-deco .td-3{ right: 4%; top: 22%; animation: floaty 8.4s ease-in-out infinite .8s; }
+.tree-deco .td-4{ right: 9%; bottom: 9%; width: clamp(88px, 7.4vw, 118px); animation: floaty 10s ease-in-out infinite .4s; }
+@media (max-width: 1080px){ .tree-deco{ display: none; } }
+
+/* 树干：只在桌面显示 */
+.trunk-line{
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 22px;
+  margin-left: -11px;
+  border-radius: 12px;
+  background: linear-gradient(180deg, #EBD6AE 0%, #DCC094 45%, #CBAA77 100%);
+  box-shadow: inset -5px 0 9px rgba(122,96,66,.18), inset 5px 0 8px rgba(255,255,255,.35);
+}
+.trunk-line::after{
+  content: "";
+  position: absolute;
+  left: 50%; bottom: -26px;
+  width: 76px; height: 26px;
+  margin-left: -38px;
+  border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+  background: radial-gradient(ellipse at 50% 0%, #DCC094 0%, #CBAA77 70%, transparent 72%);
+  opacity: .55;
+}
+
+.branches{ position: relative; display: flex; flex-direction: column; }
+
+.branch{
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  padding-bottom: clamp(4px, 1vh, 10px);
+}
+
+/* 树枝横臂：从树干伸向挂饰 */
+.branch-arm{
+  position: absolute;
+  top: 24px;
+  width: var(--arm, 122px);
+  height: 12px;
+  background: linear-gradient(180deg, #EBD6AE, #D3B586);
+  border-radius: 8px;
+}
+.branch.left  .branch-arm{ right: 50%; border-radius: 8px 3px 3px 8px; }
+.branch.right .branch-arm{ left: 50%;  border-radius: 3px 8px 8px 3px; }
+
+/* 枝头的小叶子 */
+.branch-leaf{
+  position: absolute;
+  top: 6px;
+  width: 15px; height: 15px;
+  border-radius: 50%;
+  background: var(--mint);
+  box-shadow: 0 0 0 6px rgba(127,216,200,.20);
+}
+.branch.left  .branch-leaf{ right: calc(50% + var(--arm, 122px) - 8px); }
+.branch.right .branch-leaf{ left: calc(50% + var(--arm, 122px) - 8px); }
+
+/* 挂饰位置（随内容撑高，挂饰不会互相压住） */
+.branch-slot{
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 24px;
+}
+.branch.left  .branch-slot{ margin-left: auto;  margin-right: calc(50% + 14px); }
+.branch.right .branch-slot{ margin-left: calc(50% + 14px); margin-right: auto; }
+
+/* 挂绳 + 挂饰 */
+.hang{ display: flex; flex-direction: column; align-items: center; }
+.string{
+  width: 2px;
+  height: clamp(6px, .9vh, 11px);
+  background: repeating-linear-gradient(180deg, rgba(122,96,66,.55) 0 4px, transparent 4px 8px);
+}
+.ornament{
+  display: block;
+  border: 0;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  transform-origin: top center;
+  animation: sway 5.4s ease-in-out infinite;
+  transition: filter .3s var(--ease);
+}
+.branch:nth-child(2) .ornament{ animation-delay: -1.3s; }
+.branch:nth-child(3) .ornament{ animation-delay: -2.6s; }
+.branch:nth-child(4) .ornament{ animation-delay: -3.9s; }
+
+@keyframes sway{
+  0%, 100%{ transform: rotate(-2.4deg); }
+  50%     { transform: rotate(2.4deg); }
+}
+
+.ornament img{
+  width: clamp(66px, 6vw, 80px);
+  height: auto;
+  filter: drop-shadow(0 12px 16px rgba(122,96,66,.20));
+  transition: transform .3s var(--ease), filter .3s var(--ease);
+}
+.branch-slot:hover .ornament img,
+.ornament:focus-visible img{
+  transform: scale(1.07) translateY(-4px);
+  filter: drop-shadow(0 18px 22px rgba(122,96,66,.26));
+}
+
+/* 标签牌 */
+.branch-label{
+  margin-top: 6px;
+  padding: 5px 12px;
+  background: var(--white);
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  box-shadow: 3px 3px 0 rgba(74,59,50,.9);
+  font-size: clamp(.84rem, 2.2vw, .95rem);
+  letter-spacing: .14em;
+  text-indent: .14em;
+  transition: transform .24s var(--ease), background .24s var(--ease);
+  white-space: nowrap;
+}
+.branch-label .en{
+  display: block;
+  font-size: .6rem;
+  letter-spacing: .16em;
+  color: var(--ink-soft);
+  text-indent: .16em;
+  margin-top: 1px;
+}
+.branch-slot:hover .branch-label,
+.branch-slot:focus-within .branch-label{
+  transform: translateY(-3px) rotate(-1.2deg);
+  background: var(--lemon);
+}
+
+/* 返回封面 */
+.back-cover{
+  position: absolute;
+  left: clamp(12px, 3vw, 34px);
+  top: 4px;
+  display: block;
+  margin: 0;
+  padding: 9px 18px;
+  background: transparent;
+  border: 1.6px dashed rgba(122,96,66,.5);
+  border-radius: 999px;
+  color: var(--ink-soft);
+  font-size: .76rem;
+  letter-spacing: .1em;
+  cursor: pointer;
+  transition: background .2s var(--ease), color .2s var(--ease);
+}
+.back-cover:hover{ background: rgba(255,253,248,.85); color: var(--ink); }
+
+/* ============================================================
+   6. 第三层：分支详情 / Branch pages
+   ============================================================ */
+#layer-detail{ padding: clamp(26px, 5vh, 48px) 0 0; }
+
+.page-head{
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px clamp(16px, 4vw, 32px);
+  background: rgba(251,242,225,.88);
+  backdrop-filter: blur(10px);
+  border-bottom: 1.5px dashed rgba(122,96,66,.26);
+}
+.page-head .back{
+  flex: 0 0 auto;
+  padding: 8px 15px;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  background: var(--white);
+  font-size: .78rem;
+  letter-spacing: .06em;
+  cursor: pointer;
+  box-shadow: 3px 3px 0 rgba(74,59,50,.9);
+  transition: transform .18s var(--ease), box-shadow .18s var(--ease);
+}
+.page-head .back:hover{ transform: translate(-1px,-1px); box-shadow: 4px 4px 0 rgba(74,59,50,.9); }
+.page-head h2{
+  margin: 0;
+  font-size: clamp(.98rem, 2.6vw, 1.15rem);
+  letter-spacing: .16em;
+  font-weight: 600;
+}
+.page-head h2 span{
+  display: block;
+  font-family: var(--font-en);
+  font-size: .66rem;
+  letter-spacing: .24em;
+  color: var(--ink-soft);
+  font-weight: 400;
+  margin-top: 1px;
+}
+.page-head .page-dimoo{
+  margin-left: auto;
+  align-self: center;
+  width: clamp(34px, 4.6vw, 48px);
+  height: auto;
+  filter: drop-shadow(0 6px 10px rgba(122,96,66,.2));
+}
+
+.page-body{
+  max-width: 940px;
+  margin: 0 auto;
+  padding: clamp(22px, 4vh, 40px) clamp(16px, 4vw, 32px) 40px;
+}
+
+/* Dimoo 对话框 */
+.dimoo-talk{
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  margin-bottom: clamp(22px, 4vh, 34px);
+}
+.dimoo-talk img{
+  width: clamp(78px, 12vw, 118px);
+  height: auto;
+  flex: 0 0 auto;
+  filter: drop-shadow(0 10px 14px rgba(122,96,66,.18));
+}
+.bubble{
+  position: relative;
+  flex: 1 1 auto;
+  padding: 16px 20px;
+  background: var(--white);
+  border: 2.5px solid var(--ink);
+  border-radius: 22px 22px 22px 6px;
+  box-shadow: var(--shadow-sm);
+  font-size: clamp(.86rem, 2.3vw, .98rem);
+  line-height: 1.85;
+}
+.bubble::before{
+  content: "";
+  position: absolute;
+  left: -13px; bottom: 10px;
+  width: 0; height: 0;
+  border: 9px solid transparent;
+  border-right-color: var(--ink);
+}
+.bubble::after{
+  content: "";
+  position: absolute;
+  left: -9px; bottom: 11px;
+  width: 0; height: 0;
+  border: 8px solid transparent;
+  border-right-color: var(--white);
+}
+.bubble .en{
+  display: block;
+  margin-top: 8px;
+  font-size: .78rem;
+  line-height: 1.7;
+  color: var(--ink-soft);
+}
+
+/* 小节标题 */
+.sec-title{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: clamp(26px, 4.6vh, 42px) 0 14px;
+  font-size: clamp(.92rem, 2.4vw, 1.02rem);
+  letter-spacing: .14em;
+  font-weight: 600;
+}
+.sec-title::before{
+  content: "";
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: var(--pink);
+  box-shadow: 0 0 0 5px rgba(245,139,168,.2);
+  flex: 0 0 auto;
+}
+.sec-title .en{
+  font-size: .66rem;
+  letter-spacing: .2em;
+  color: var(--ink-faint);
+  font-weight: 400;
+}
+.sec-title.t-mint::before{ background: var(--mint); box-shadow: 0 0 0 5px rgba(127,216,200,.22); }
+.sec-title.t-lemon::before{ background: var(--lemon); box-shadow: 0 0 0 5px rgba(255,209,102,.24); }
+.sec-title.t-lilac::before{ background: var(--lilac); box-shadow: 0 0 0 5px rgba(185,167,232,.22); }
+.sec-title.t-sky::before{ background: var(--sky); box-shadow: 0 0 0 5px rgba(143,199,242,.22); }
+
+/* 卡片网格 */
+.card-grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(232px, 1fr));
+  align-items: start;
+  gap: 14px;
+}
+
+.card{
+  position: relative;
+  padding: 18px 18px 20px;
+  background: var(--white);
+  border: 1.8px solid rgba(74,59,50,.16);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  transition: transform .3s var(--ease), box-shadow .3s var(--ease), border-color .3s var(--ease);
+}
+.card:hover{
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+  border-color: rgba(74,59,50,.3);
+}
+.card h4{
+  margin: 0 0 6px;
+  font-size: .96rem;
+  letter-spacing: .08em;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.card h4 .en{ font-size: .68rem; letter-spacing: .16em; color: var(--ink-faint); }
+.card p{
+  margin: 0;
+  font-size: .86rem;
+  color: var(--ink-soft);
+  line-height: 1.85;
+}
+.card p .en{
+  display: block;
+  font-size: .76rem;
+  margin-top: 4px;
+  opacity: .9;
+}
+.card .dot{
+  display: inline-block;
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  margin-right: 2px;
+  flex: 0 0 auto;
+}
+
+/* 小标签 */
+.tags{ display: flex; flex-wrap: wrap; gap: 7px; margin-top: 10px; }
+.tag{
+  padding: 3px 11px;
+  font-size: .72rem;
+  border-radius: 999px;
+  background: var(--pink-soft);
+  color: #A8506D;
+  letter-spacing: .04em;
+}
+.tag.mint{ background: rgba(127,216,200,.24); color: #2E7F72; }
+.tag.lemon{ background: rgba(255,209,102,.32); color: #8A6410; }
+.tag.lilac{ background: rgba(185,167,232,.26); color: #5C4A94; }
+.tag.sky{ background: rgba(143,199,242,.26); color: #2C628F; }
+
+/* 照片墙 */
+.gallery{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+  margin-top: 14px;
+}
+.shot{
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+  border: 1.8px solid rgba(74,59,50,.14);
+  background: var(--cream-2);
+  box-shadow: var(--shadow-sm);
+  transition: transform .34s var(--ease), box-shadow .34s var(--ease);
+  margin: 0;
+}
+.shot:hover{ transform: translateY(-4px) rotate(-.6deg); box-shadow: var(--shadow-md); }
+.shot img{
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  transition: transform .6s var(--ease);
+}
+.shot:hover img{ transform: scale(1.045); }
+.shot.tall img{ aspect-ratio: 3 / 4; }
+.shot figcaption{
+  padding: 7px 10px 9px;
+  font-size: .72rem;
+  color: var(--ink-soft);
+  letter-spacing: .04em;
+  line-height: 1.5;
+  background: var(--white);
+}
+.shot figcaption .en{ display: block; font-size: .66rem; opacity: .8; }
+
+/* 照片占位 */
+.photo-stub{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 4 / 3;
+  border: 1.8px dashed rgba(122,96,66,.36);
+  border-radius: var(--radius-sm);
+  background: repeating-linear-gradient(45deg, rgba(246,231,203,.7) 0 10px, rgba(251,242,225,.7) 10px 20px);
+  color: var(--ink-faint);
+  font-size: .76rem;
+  letter-spacing: .1em;
+  text-align: center;
+  padding: 10px;
+}
+
+/* 时间线 */
+.timeline{ position: relative; margin-top: 8px; padding-left: 30px; }
+.timeline::before{
+  content: "";
+  position: absolute;
+  left: 9px; top: 6px; bottom: 6px;
+  width: 3px;
+  border-radius: 3px;
+  background: repeating-linear-gradient(180deg, rgba(122,96,66,.34) 0 7px, transparent 7px 14px);
+}
+.tl-item{ position: relative; padding: 0 0 20px; }
+.tl-item::before{
+  content: "";
+  position: absolute;
+  left: -27px; top: 8px;
+  width: 15px; height: 15px;
+  border-radius: 50%;
+  background: var(--white);
+  border: 3px solid var(--pink);
+  box-shadow: 0 0 0 4px rgba(245,139,168,.16);
+}
+.tl-item:nth-child(2n)::before{ border-color: var(--mint); box-shadow: 0 0 0 4px rgba(127,216,200,.18); }
+.tl-item:nth-child(3n)::before{ border-color: var(--lemon); box-shadow: 0 0 0 4px rgba(255,209,102,.2); }
+.tl-item:nth-child(5n)::before{ border-color: var(--lilac); box-shadow: 0 0 0 4px rgba(185,167,232,.18); }
+.tl-item h4{
+  margin: 0 0 3px;
+  font-size: .92rem;
+  letter-spacing: .06em;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.tl-item h4 .en{ font-size: .66rem; letter-spacing: .14em; color: var(--ink-faint); }
+.tl-item p{ margin: 0; font-size: .85rem; color: var(--ink-soft); line-height: 1.8; }
+
+/* 搬家路线 */
+.route{
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  padding: 14px 16px;
+  border-radius: var(--radius);
+  background: rgba(255,253,248,.8);
+  border: 1.6px dashed rgba(122,96,66,.3);
+}
+.route .stop{
+  padding: 5px 13px;
+  border-radius: 999px;
+  background: var(--cream-2);
+  font-size: .78rem;
+  letter-spacing: .05em;
+}
+.route .stop.best{ background: var(--pink); color: #fff; }
+.route .arrow{ color: var(--ink-faint); font-size: .8rem; }
+
+/* 更新中提示 */
+.wip{
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  border: 1.4px dashed rgba(122,96,66,.4);
+  font-size: .72rem;
+  color: var(--ink-soft);
+  background: rgba(255,253,248,.7);
+}
+.wip::before{ content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--peach); }
+
+/* 页脚 */
+.site-foot{
+  margin-top: clamp(30px, 6vh, 60px);
+  padding: 20px 16px 30px;
+  text-align: center;
+  font-size: .72rem;
+  color: var(--ink-faint);
+  letter-spacing: .06em;
+  line-height: 1.9;
+  border-top: 1.5px dashed rgba(122,96,66,.22);
+}
+.site-foot .en{ display: block; font-size: .66rem; opacity: .85; }
+
+/* ============================================================
+   7. 响应式 / Responsive
+   ============================================================ */
+@media (max-width: 760px){
+  .cover-toys img:nth-child(n+3){ display: none; }
+
+  .head-pet.cat{ left: 2%; top: 54%; }
+  .head-pet.dog{ right: 2%; top: 50%; }
+  .pet-bubble.cat{ left: 12%; top: 50%; }
+  .pet-bubble.dog{ right: 12%; top: 46%; }
+
+  .portrait::before, .portrait::after{ width: 58px; height: 18px; }
+
+  .life-head{ font-size: .72rem; margin-bottom: 46px; }
+  .life-head .en{ font-size: .64rem; }
+  .life-walker{ width: 42px; }
+  .stage-chips{ gap: 5px; }
+  .stage-chip{ font-size: .64rem; padding: 3px 8px; }
+  .life-now{ font-size: .78rem; }
+
+  /* 树干改为竖向列表 */
+  .trunk-line{ display: none; }
+  .branches{ gap: 14px; }
+  .branch{ display: block; padding-bottom: 0; }
+  .branch-arm, .branch-leaf{ display: none; }
+  .branch.left .branch-slot,
+  .branch.right .branch-slot{
+    position: static;
+    margin: 0;
+    display: grid;
+    grid-template-columns: 92px 1fr;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 12px;
+    background: rgba(255,253,248,.72);
+    border: 1.6px dashed rgba(122,96,66,.28);
+    border-radius: var(--radius);
+  }
+  .branch .string{ display: none; }
+  .branch .hang{
+    grid-column: 1;
+    flex-direction: row;
+    align-items: center;
+    gap: 0;
+  }
+  .branch .string{
+    width: clamp(10px, 3vw, 16px);
+    height: 2px;
+    background: repeating-linear-gradient(90deg, rgba(122,96,66,.5) 0 4px, transparent 4px 8px);
+  }
+  .branch .ornament img{ width: 74px; }
+  .branch-label{
+    grid-column: 2;
+    justify-self: start;
+    white-space: normal;
+    text-align: left;
+    box-shadow: 2px 2px 0 rgba(74,59,50,.85);
+    padding: 7px 14px;
+    letter-spacing: .06em;
+    text-indent: 0;
+    font-size: .9rem;
+  }
+  .branch-label .en{ text-indent: 0; }
+
+  .page-head{ flex-wrap: wrap; gap: 10px; }
+  .page-head .page-dimoo{ width: 40px; }
+  .dimoo-talk{ align-items: flex-start; }
+  .dimoo-talk img{ width: 70px; }
+  .bubble{ border-radius: 18px 18px 18px 6px; padding: 14px 15px; }
+  .gallery{ grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .card-grid{ grid-template-columns: 1fr; }
+  .route{ gap: 6px; padding: 12px; }
+  .route .stop{ font-size: .72rem; }
+
+  .tree-head{ padding-top: 2px; }
+  .back-cover{ position: static; margin: 14px auto 0; }
+}
+
+@media (max-width: 420px){
+  .name-cn{ letter-spacing: .12em; text-indent: .12em; }
+  .slogan{ letter-spacing: .18em; text-indent: .18em; }
+  .gallery{ grid-template-columns: 1fr; }
+}
+
+/* 减少动画偏好 */
+@media (prefers-reduced-motion: reduce){
+  *{ animation: none !important; transition-duration: .01ms !important; }
+}
+
+/* 打印 */
+@media print{
+  .cover-toys, .head-pet, .pet-bubble, .enter-btn, .back-cover{ display: none !important; }
+  .layer{ display: block !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     第一层：封面 / Layer 1 — Cover
+     ============================================================ -->
+<section class="layer is-active" id="layer-cover" aria-label="封面 Cover">
+  <div class="cover-toys" aria-hidden="true">
+    <img src="images/dimoo/dflight_0_0.png" alt="">
+    <img src="images/dimoo/dspring_0_1.png" alt="">
+    <img src="images/dimoo/dflight_3_1.png" alt="">
+    <img src="images/dimoo/dpixar_2_2.png" alt="">
+    <img src="images/dimoo/dspring_1_1.png" alt="">
+    <img src="images/dimoo/dbeige_1_2.png" alt="">
+  </div>
+
+  <button class="head-pet cat" type="button" data-pet="cat" aria-label="和这只 Dimoo 打个招呼 / Say hi to this Dimoo">
+    <img src="images/dimoo/dimoo_head_cat.png" alt="">
+  </button>
+  <div class="pet-bubble cat" data-bubble="cat" role="status">
+    <span class="txt-cn"></span>
+    <span class="en txt-en"></span>
+  </div>
+
+  <button class="head-pet dog" type="button" data-pet="dog" aria-label="和这只 Dimoo 打个招呼 / Say hi to this Dimoo">
+    <img src="images/dimoo/dimoo_head_dog.png" alt="">
+  </button>
+  <div class="pet-bubble dog" data-bubble="dog" role="status">
+    <span class="txt-cn"></span>
+    <span class="en txt-en"></span>
+  </div>
+
+  <div class="cover-inner">
+    <div class="portrait">
+      <img src="images/p01_kimono.jpg" alt="卓予涵在日式庭院里的和服照 / Zhuo Yuhan in a kimono at a Japanese garden">
+    </div>
+
+    <h1 class="name-cn">卓予涵</h1>
+    <p class="name-en">Zhuo Yuhan</p>
+
+    <p class="slogan">
+      境随心转
+      <span class="slogan-en en">As the heart turns, the world turns with it.</span>
+    </p>
+
+    <p class="tagline">
+      一个正在努力向理想方向前进之人。
+      <span class="en">A person still walking toward who they want to become.</span>
+    </p>
+
+    <button class="enter-btn" type="button" id="enter-btn">
+      详细走进此玩家的世界
+      <span class="en">Enter the Player's World</span>
+    </button>
+
+    <!-- 人生进度条 -->
+    <div class="life" aria-labelledby="life-title">
+      <div class="life-head">
+        <span id="life-title" class="ttl">人生进度</span>
+        <span class="en">Life Progress · 按 100 岁折算 / out of 100 years</span>
+      </div>
+
+      <div class="life-bar" role="img" id="life-bar" aria-label="人生进度条">
+        <div class="life-fill" id="life-fill"></div>
+        <div class="life-ticks" id="life-ticks"></div>
+        <img class="life-walker" id="life-walker" src="images/dimoo/dspring_2_1.png" alt="站在人生进度当前位置的 Dimoo / Dimoo standing at the current point of the line">
+      </div>
+
+      <p class="life-now">
+        <span id="life-now-cn">正在计算…</span>
+        <span class="en" id="life-now-en"></span>
+      </p>
+      <div class="stage-chips" id="stage-chips"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     第二层：树干 / Layer 2 — Tree
+     ============================================================ -->
+<section class="layer" id="layer-tree" aria-label="四条分支 Four branches">
+  <div class="tree-deco" aria-hidden="true">
+    <img class="td-1" src="images/dimoo/dflight_1_0.png" alt="">
+    <img class="td-2" src="images/dimoo/dspring_1_1.png" alt="">
+    <img class="td-3" src="images/dimoo/dpixar_2_1.png" alt="">
+    <img class="td-4" src="images/dimoo/dflight_2_2.png" alt="">
+  </div>
+  <div class="tree-head">
+    <h2>四条分支</h2>
+    <p>FOUR BRANCHES · 挑一个挂饰，往下走</p>
+    <button class="back-cover" type="button" data-back="cover">← 回到封面 / Back to cover</button>
+  </div>
+
+  <div class="tree">
+    <div class="trunk-line" aria-hidden="true"></div>
+
+    <div class="branches">
+      <!-- 性格 -->
+      <div class="branch left">
+        <div class="branch-slot">
+          <div class="hang">
+            <span class="string" aria-hidden="true"></span>
+            <button class="ornament" type="button" data-goto="personality" aria-label="打开性格分支 / Open Personality">
+              <img src="images/dimoo/dflight_0_2.png" alt="Dimoo 和云做邻居手办 / Dimoo The Cloud Next Door">
+            </button>
+          </div>
+          <span class="branch-label">性格<span class="en">PERSONALITY</span></span>
+        </div>
+        <span class="branch-arm" aria-hidden="true"></span>
+        <span class="branch-leaf" aria-hidden="true"></span>
+      </div>
+
+      <!-- 爱好 -->
+      <div class="branch right">
+        <span class="branch-arm" aria-hidden="true"></span>
+        <span class="branch-leaf" aria-hidden="true"></span>
+        <div class="branch-slot">
+          <div class="hang">
+            <span class="string" aria-hidden="true"></span>
+            <button class="ornament" type="button" data-goto="hobby" aria-label="打开爱好分支 / Open Hobbies">
+              <img src="images/dimoo/dspring_0_0.png" alt="Dimoo 抱紧春天手办 / Dimoo Hugging Spring">
+            </button>
+          </div>
+          <span class="branch-label">爱好<span class="en">HOBBIES</span></span>
+        </div>
+      </div>
+
+      <!-- 人生经历 -->
+      <div class="branch left">
+        <div class="branch-slot">
+          <div class="hang">
+            <span class="string" aria-hidden="true"></span>
+            <button class="ornament" type="button" data-goto="journey" aria-label="打开人生经历分支 / Open Life So Far">
+              <img src="images/dimoo/dflight_3_0.png" alt="Dimoo 纸箱号出发手办 / Dimoo Captain Cardboard">
+            </button>
+          </div>
+          <span class="branch-label">人生经历<span class="en">LIFE SO FAR</span></span>
+        </div>
+        <span class="branch-arm" aria-hidden="true"></span>
+        <span class="branch-leaf" aria-hidden="true"></span>
+      </div>
+
+      <!-- 未来规划 -->
+      <div class="branch right">
+        <span class="branch-arm" aria-hidden="true"></span>
+        <span class="branch-leaf" aria-hidden="true"></span>
+        <div class="branch-slot">
+          <div class="hang">
+            <span class="string" aria-hidden="true"></span>
+            <button class="ornament" type="button" data-goto="future" aria-label="打开未来规划分支 / Open What's Next">
+              <img src="images/dimoo/dbeige_3_2.png" alt="Dimoo 解锁时间手办 / Dimoo Unlocking Time">
+            </button>
+          </div>
+          <span class="branch-label">未来规划<span class="en">WHAT'S NEXT</span></span>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+</section>
+
+<!-- ============================================================
+     第三层：分支详情 / Layer 3 — Branch pages
+     ============================================================ -->
+<section class="layer" id="layer-detail" aria-label="分支详情 Branch detail">
+  <div class="page-head">
+    <button class="back" type="button" data-back="tree">← 回到树 / Back</button>
+    <h2 id="page-title">性格<span>PERSONALITY</span></h2>
+    <img class="page-dimoo" id="page-dimoo" src="images/dimoo/dflight_0_2.png" alt="">
+  </div>
+
+  <div class="page-body">
+
+    <!-- ======================= 性格 ======================= -->
+    <article class="branch-page" data-page="personality">
+      <div class="dimoo-talk">
+        <img src="images/dimoo/dflight_1_1.png" alt="Dimoo 酸砂糖引力手办 / Dimoo Sour Gummy Gravity">
+        <div class="bubble">
+          相对外向，喜欢热闹，但也很需要独处的时间。
+          <span class="en">Outgoing on the whole — I like a lively room, and I still need time on my own.</span>
+        </div>
+      </div>
+
+      <h3 class="sec-title">和我相处的几个关键词<span class="en">A FEW THINGS ABOUT ME</span></h3>
+
+      <div class="card-grid">
+        <div class="card">
+          <h4><span class="dot" style="background:var(--pink)"></span>热闹，也要独处<span class="en">CROWD &amp; QUIET</span></h4>
+          <p>相对外向，喜欢热闹，但也需要独处的时间。
+            <span class="en">Outgoing, fond of a crowd — and still in need of quiet time alone.</span></p>
+        </div>
+        <div class="card">
+          <h4><span class="dot" style="background:var(--mint)"></span>和人打交道<span class="en">WITH PEOPLE</span></h4>
+          <p>比较善于和人打交道，认识新朋友这件事不太让我紧张。
+            <span class="en">Fairly good with people; meeting someone new doesn't make me nervous.</span></p>
+        </div>
+        <div class="card">
+          <h4><span class="dot" style="background:var(--lemon)"></span>先试一次再说<span class="en">TRY IT FIRST</span></h4>
+          <p>喜欢尝试自己有兴趣的事物，想到了就想动手试。
+            <span class="en">If something interests me, I'd rather try it than keep wondering.</span></p>
+        </div>
+        <div class="card">
+          <h4><span class="dot" style="background:var(--peach)"></span>吃到好吃的会幸福<span class="en">GOOD FOOD</span></h4>
+          <p>吃到好吃的会很幸福，这一点很容易被满足。
+            <span class="en">Good food makes me genuinely happy — it doesn't take much.</span></p>
+        </div>
+        <div class="card">
+          <h4><span class="dot" style="background:var(--sky)"></span>高精力<span class="en">HIGH ENERGY</span></h4>
+          <p>喜欢出去玩，是那种精力比较足的人。
+            <span class="en">I love going out — the high-energy type.</span></p>
+        </div>
+        <div class="card">
+          <h4><span class="dot" style="background:var(--lilac)"></span>长情，也感性<span class="en">LONG-MEMORIED</span></h4>
+          <p>长情又感性，对在意的人和事会比较敏感。
+            <span class="en">Loyal and sentimental; the people and things I care about move me easily.</span></p>
+        </div>
+      </div>
+
+      <h3 class="sec-title t-mint">和朋友在一起的时候<span class="en">AROUND FRIENDS</span></h3>
+      <div class="gallery">
+        <figure class="shot tall">
+          <img src="images/p18_friends_sunset.jpg" alt="傍晚街头和朋友的三人自拍 / An evening selfie with two friends">
+        </figure>
+        <figure class="shot tall">
+          <img src="images/p19_friends_evening.jpg" alt="夜里和朋友的三自拍 / A night selfie with two friends">
+        </figure>
+        <figure class="shot tall">
+          <img src="images/p02_mirror.jpg" alt="电梯里的镜子自拍 / A mirror selfie in an elevator">
+        </figure>
+      </div>
+    </article>
+
+    <!-- ======================= 爱好 ======================= -->
+    <article class="branch-page" data-page="hobby" hidden>
+      <div class="dimoo-talk">
+        <img src="images/dimoo/dspring_2_0.png" alt="Dimoo 捕捉春天手办 / Dimoo Catching Spring">
+        <div class="bubble">
+          感兴趣的事有点多：跳舞、弹琴、追星、拍照、出去玩、做饭，还有看番。
+          <span class="en">Quite a few things: dancing, piano, fandom, photography, cooking — and anime.</span>
+        </div>
+      </div>
+
+      <h3 class="sec-title">跳舞<span class="en">DANCE</span></h3>
+      <div class="card-grid">
+        <div class="card">
+          <h4><span class="dot" style="background:var(--pink)"></span>擅长 jazz 和 choreography</h4>
+          <p>主要跳 jazz 和 choreography；也跳过一点 hiphop、breaking、locking。
+            <span class="en">Mostly jazz and choreography; also a little hiphop, breaking and locking.</span></p>
+          <div class="tags">
+            <span class="tag">Jazz</span>
+            <span class="tag mint">Choreography</span>
+            <span class="tag lemon">Hiphop</span>
+            <span class="tag lilac">Breaking</span>
+            <span class="tag sky">Locking</span>
+          </div>
+        </div>
+        <figure class="shot">
+          <img src="images/p14_dance.jpg" alt="舞蹈队合影 / A group photo of the dance crew">
+          <figcaption>舞蹈队<span class="en">The dance crew</span></figcaption>
+        </figure>
+      </div>
+
+      <h3 class="sec-title t-lemon">钢琴<span class="en">PIANO</span></h3>
+      <div class="card-grid">
+        <div class="card">
+          <h4><span class="dot" style="background:var(--lemon)"></span>三脚猫功夫，纯爱好</h4>
+          <p>没考过级，纯属爱好；喜欢弹流行曲。
+            <span class="en">No graded exams — purely a hobby. I like playing pop songs.</span></p>
+          <!-- 自绘琴键插画 / a hand-drawn style keyboard, drawn from scratch -->
+          <svg viewBox="0 0 240 84" role="img" aria-label="钢琴琴键插画 / A small piano keyboard illustration"
+               style="margin-top:14px;width:100%;max-width:260px;height:auto;border-radius:10px;box-shadow:var(--shadow-sm)">
+            <rect x="0" y="0" width="240" height="84" rx="10" fill="#4A3B32"/>
+            <rect x="6"   y="10" width="28" height="66" rx="4" fill="#FFFDF8"/>
+            <rect x="36"  y="10" width="28" height="66" rx="4" fill="#FDF3E0"/>
+            <rect x="66"  y="10" width="28" height="66" rx="4" fill="#FFFDF8"/>
+            <rect x="96"  y="10" width="28" height="66" rx="4" fill="#FDF3E0"/>
+            <rect x="126" y="10" width="28" height="66" rx="4" fill="#FFFDF8"/>
+            <rect x="156" y="10" width="28" height="66" rx="4" fill="#FDF3E0"/>
+            <rect x="186" y="10" width="28" height="66" rx="4" fill="#FFFDF8"/>
+            <rect x="216" y="10" width="18" height="66" rx="4" fill="#FDF3E0"/>
+            <g fill="#4A3B32">
+              <rect x="28"  y="10" width="14" height="40" rx="3"/>
+              <rect x="58"  y="10" width="14" height="40" rx="3"/>
+              <rect x="118" y="10" width="14" height="40" rx="3"/>
+              <rect x="148" y="10" width="14" height="40" rx="3"/>
+              <rect x="178" y="10" width="14" height="40" rx="3"/>
+            </g>
+            <circle cx="40" cy="70" r="4" fill="#F58BA8"/>
+            <circle cx="130" cy="70" r="4" fill="#7FD8C8"/>
+          </svg>
+        </div>
+        <div class="card">
+          <h4><span class="dot" style="background:var(--mint)"></span>为什么喜欢</h4>
+          <p>不为考级，也不为表演，只是喜欢把一首流行曲完整弹下来。
+            <span class="en">Not for exams or stages — just to play a pop song from start to finish.</span></p>
+          <div class="tags">
+            <span class="tag lemon">流行曲 / Pop songs</span>
+            <span class="tag mint">纯爱好 / Just for fun</span>
+          </div>
+        </div>
+      </div>
+
+      <h3 class="sec-title t-lilac">追星<span class="en">FANDOM</span></h3>
+      <div class="card-grid">
+        <div class="card">
+          <h4><span class="dot" style="background:var(--lilac)"></span>内娱 · 韩娱</h4>
+          <p>内娱追过线下，韩娱略知一二。
+            <span class="en">I've queued up for domestic shows in person; vaguely fluent in K-pop too.</span></p>
+        </div>
+        <figure class="shot tall">
+          <img src="images/p20_concert_crowd.jpg" alt="演唱会现场 / At a concert">
+        </figure>
+        <figure class="shot tall">
+          <img src="images/p03_lightstick.jpg" alt="演唱会上的灯棒自拍 / Selfie with a light stick at a concert">
+        </figure>
+      </div>
+
+      <h3 class="sec-title t-sky">摄影<span class="en">PHOTOGRAPHY</span></h3>
+      <div class="card-grid">
+        <div class="card">
+          <h4><span class="dot" style="background:var(--sky)"></span>不专业，拍着玩</h4>
+          <p>不专业，纯粹拍着玩。喜欢拍街道、夜景和光影。
+            <span class="en">Not a professional — I just shoot for fun: streets, night views, light and shadow.</span></p>
+        </div>
+        <figure class="shot">
+          <img src="images/p07_camera.jpg" alt="手上的富士 X100V 相机 / A Fujifilm X100V in hand">
+          <figcaption>随身这台<span class="en">The one I carry</span></figcaption>
+        </figure>
+      </div>
+      <div class="gallery">
+        <figure class="shot">
+          <img src="images/p08_shibuya.jpg" alt="涩谷十字路口夜景 / Shibuya Crossing at night">
+          <figcaption>涩谷十字路口<span class="en">Shibuya Crossing</span></figcaption>
+        </figure>
+        <figure class="shot">
+          <img src="images/p09_tokyotower.jpg" alt="夜晚的东京塔 / Tokyo Tower at night">
+          <figcaption>东京塔<span class="en">Tokyo Tower</span></figcaption>
+        </figure>
+        <figure class="shot">
+          <img src="images/p10_torii.jpg" alt="神社的红色鸟居 / A red torii gate at a shrine">
+          <figcaption>鸟居<span class="en">Torii</span></figcaption>
+        </figure>
+        <figure class="shot">
+          <img src="images/p11_lanterns.jpg" alt="神社石阶与灯笼 / Stone steps and lanterns at a shrine">
+          <figcaption>石阶和灯笼<span class="en">Steps and lanterns</span></figcaption>
+        </figure>
+        <figure class="shot">
+          <img src="images/p12_moss.jpg" alt="苔藓庭院里的巨树 / Old trees in a moss garden">
+          <figcaption>苔藓与老树<span class="en">Moss and old trees</span></figcaption>
+        </figure>
+      </div>
+
+      <h3 class="sec-title">旅游<span class="en">TRAVEL</span></h3>
+      <div class="card-grid">
+        <div class="card">
+          <h4><span class="dot" style="background:var(--pink)"></span>喜欢出去玩</h4>
+          <p>喜欢出去玩，看海、逛城市，去一次就能记住的地方。
+            <span class="en">I like getting out — the sea, city walks, places worth remembering.</span></p>
+        </div>
+        <figure class="shot">
+          <img src="images/p06_castle.jpg" alt="环球影城城堡前的合影 / In front of the castle at Universal Studios">
+          <figcaption>第一次去环球影城<span class="en">First time at Universal</span></figcaption>
+        </figure>
+        <figure class="shot">
+          <img src="images/p05_seaside.jpg" alt="海边栏杆边的背影 / Looking out over the sea">
+          <figcaption>海边的风<span class="en">The sea wind</span></figcaption>
+        </figure>
+      </div>
+
+      <h3 class="sec-title">做饭<span class="en">COOKING</span></h3>
+      <div class="card-grid">
+        <div class="card">
+          <h4><span class="dot" style="background:var(--peach)"></span>刚学会一点点</h4>
+          <p>会一点小甜品和家常菜，最近刚开始学。
+            <span class="en">A few little desserts and simple home dishes — I only started recently.</span></p>
+        </div>
+        <div class="card">
+          <h4><span class="dot" style="background:var(--lemon)"></span>现在的进度</h4>
+          <p>甜品先从小份的做起，家常菜还在照着菜谱的阶段。
+            <span class="en">Desserts first, in small batches; home dishes still at the follow-the-recipe stage.</span></p>
+          <div class="wip">还在学习中 · still learning</div>
+        </div>
+      </div>
+      <div class="gallery">
+        <figure class="shot">
+          <img src="images/p21_cookies.jpg" alt="烤好的巧克力曲奇配一杯牛奶 / Chocolate cookies with a glass of milk">
+          <figcaption>刚烤好的曲奇<span class="en">Freshly baked cookies</span></figcaption>
+        </figure>
+        <figure class="shot">
+          <img src="images/p22_cheesecake.jpg" alt="切开的芝士蛋糕 / A sliced cheesecake">
+          <figcaption>芝士蛋糕<span class="en">A cheesecake</span></figcaption>
+        </figure>
+      </div>
+
+      <h3 class="sec-title t-mint">动漫<span class="en">ANIME</span></h3>
+      <div class="card-grid">
+        <div class="card">
+          <h4><span class="dot" style="background:var(--mint)"></span>看点小番</h4>
+          <p>平时看点小番，喜欢故事干净、情绪细腻的那一类。
+            <span class="en">I watch a bit of anime — drawn to clean stories with delicate feelings.</span></p>
+          <div class="tags">
+            <span class="tag">与你相恋到生命尽头</span>
+            <span class="tag mint">冰之城墙</span>
+            <span class="tag lemon">金牌得主</span>
+            <span class="tag lilac">沉默魔女的秘密</span>
+            <span class="tag sky">莉可丽丝</span>
+            <span class="tag">败犬女主太多了</span>
+            <span class="tag mint">一些少女乐队番</span>
+            <span class="tag lemon">等等…</span>
+          </div>
+        </div>
+        <figure class="shot">
+          <img src="images/p13_akihabara.jpg" alt="秋叶原街头的动漫广告 / Anime billboards in Akihabara">
+          <figcaption>秋叶原<span class="en">Akihabara</span></figcaption>
+        </figure>
+      </div>
+    </article>
+
+    <!-- ======================= 人生经历 ======================= -->
+    <article class="branch-page" data-page="journey" hidden>
+      <div class="dimoo-talk">
+        <img src="images/dimoo/dflight_3_1.png" alt="Dimoo 月光引航手办 / Dimoo Sail Under the Moonlight">
+        <div class="bubble">
+          前十七年大多在深圳生活；福建人，现在在广州读书。
+          <span class="en">Most of my first seventeen years were in Shenzhen; Fujianese by family, now studying in Guangzhou.</span>
+        </div>
+      </div>
+
+      <h3 class="sec-title">一条时间线<span class="en">A TIMELINE</span></h3>
+      <div class="timeline">
+        <div class="tl-item">
+          <h4>福建人<span class="en">FUJIAN ROOTS</span></h4>
+          <p>家里是福建人。</p>
+        </div>
+        <div class="tl-item">
+          <h4>学府小学 · 学府中学<span class="en">PRIMARY &amp; JUNIOR HIGH</span></h4>
+          <p>小学和初中都在学府。</p>
+        </div>
+        <div class="tl-item">
+          <h4>深圳第二外国语学校<span class="en">SENIOR HIGH</span></h4>
+          <p>高中在深圳第二外国语。</p>
+        </div>
+        <div class="tl-item">
+          <h4>广东工业大学<span class="en">UNIVERSITY</span></h4>
+          <p>大学在广东工业大学，现在读。</p>
+        </div>
+        <div class="tl-item">
+          <h4>和父母、爷爷一起生活<span class="en">AT HOME</span></h4>
+          <p>家里和父母、爷爷一起生活。</p>
+        </div>
+      </div>
+
+      <h3 class="sec-title t-sky">住过的地方<span class="en">WHERE I'VE LIVED</span></h3>
+      <div class="card">
+        <p>在南山住过十六年，后来先后搬到宝安、龙华、光明。最喜欢南山。
+          <span class="en">Sixteen years in Nanshan, then Bao'an, Longhua and Guangming. Nanshan is still my favourite.</span></p>
+        <div class="route">
+          <span class="stop best">南山 · 16 年</span>
+          <span class="arrow">→</span>
+          <span class="stop">宝安</span>
+          <span class="arrow">→</span>
+          <span class="stop">龙华</span>
+          <span class="arrow">→</span>
+          <span class="stop">光明</span>
+        </div>
+      </div>
+
+      <h3 class="sec-title t-lemon">一些存档<span class="en">SOME SNAPSHOTS</span></h3>
+      <div class="gallery">
+        <figure class="shot">
+          <img src="images/p04_school_uniform.jpg" alt="校服在草坪上 / School uniform on the lawn">
+          <figcaption>校服的那些年<span class="en">The uniform years</span></figcaption>
+        </figure>
+        <figure class="shot">
+          <img src="images/p15_class.jpg" alt="班级合影 / A class group photo">
+          <figcaption>我们的班<span class="en">Our class</span></figcaption>
+        </figure>
+        <figure class="shot">
+          <img src="images/p16_schoolgirls.jpg" alt="女同学们的合影 / A group photo of classmates">
+          <figcaption>晚自习后的合影<span class="en">After evening study</span></figcaption>
+        </figure>
+        <figure class="shot">
+          <img src="images/p17_polaroid.jpg" alt="手里拿着拍立得照片 / Holding a Polaroid photo">
+          <figcaption>拍立得<span class="en">A Polaroid</span></figcaption>
+        </figure>
+      </div>
+      <div class="wip">这一段还在补写 · this part is still being written</div>
+    </article>
+
+    <!-- ======================= 未来规划 ======================= -->
+    <article class="branch-page" data-page="future" hidden>
+      <div class="dimoo-talk">
+        <img src="images/dimoo/dpixar_3_1.png" alt="Dimoo 巴斯光年手办 / Dimoo as Buzz Lightyear">
+        <div class="bubble">
+          现在对游戏行业感兴趣，但不给自己设限。
+          <span class="en">The game industry interests me right now — but I'm not closing any doors.</span>
+        </div>
+      </div>
+
+      <h3 class="sec-title">想做的事<span class="en">WHAT I WANT</span></h3>
+      <div class="card-grid">
+        <div class="card">
+          <h4><span class="dot" style="background:var(--mint)"></span>游戏行业<span class="en">GAME INDUSTRY</span></h4>
+          <p>目前感兴趣游戏行业，但不设限。
+            <span class="en">Interested in games for now — without ruling anything else out.</span></p>
+          <div class="tags"><span class="tag mint">不设限 / open</span></div>
+        </div>
+        <div class="card">
+          <h4><span class="dot" style="background:var(--pink)"></span>回深圳<span class="en">BACK TO SHENZHEN</span></h4>
+          <p>想回深圳，找一份可以做很久的工作。
+            <span class="en">I'd like to go back to Shenzhen and find work I can stay in for a long time.</span></p>
+        </div>
+        <div class="card">
+          <h4><span class="dot" style="background:var(--lemon)"></span>大概率读研<span class="en">GRAD SCHOOL</span></h4>
+          <p>大概率会读研。
+            <span class="en">Most likely going on to a master's.</span></p>
+        </div>
+        <div class="card">
+          <h4><span class="dot" style="background:var(--sky)"></span>四年·看一看世界<span class="en">FOUR YEARS, MORE WORLD</span></h4>
+          <p>大学四年，想多完成一些自己的未完成，也多看看世界。
+            <span class="en">In these four years I want to finish more of my unfinished things — and see more of the world.</span></p>
+        </div>
+        <div class="card">
+          <h4><span class="dot" style="background:var(--lilac)"></span>自律，也松弛<span class="en">DISCIPLINED, RELAXED</span></h4>
+          <p>想成为一个自律、但学会松弛的人。
+            <span class="en">I want to become someone disciplined who has also learned to relax.</span></p>
+        </div>
+        <div class="card">
+          <h4><span class="dot" style="background:var(--peach)"></span>清楚，然后争取<span class="en">KNOW &amp; GO GET IT</span></h4>
+          <p>明白自己要什么，然后勇敢去争取。
+            <span class="en">To know what I want, and then go after it bravely.</span></p>
+        </div>
+      </div>
+
+      <h3 class="sec-title t-lilac">还没写下来的部分<span class="en">STILL BLANK</span></h3>
+      <div class="card">
+        <p>这一页会一直更新——想到什么，就补一条。
+          <span class="en">This page keeps updating. Whenever something comes to mind, I add a line.</span></p>
+        <div class="wip">更新中 · updating</div>
+      </div>
+    </article>
+
+    <footer class="site-foot">
+      卓予涵 · 境随心转
+      <span class="en">Zhuo Yuhan — As the heart turns, the world turns with it.</span>
+      <span class="en">Dimoo © POP MART · 本页为个人非商业用途 / This page is a personal, non-commercial project.</span>
+    </footer>
+  </div>
+</section>
+
+<script>
+/* ============================================================
+   CONFIG — 想改内容先改这里 / edit these first
+   ============================================================ */
+const CONFIG = {
+  nameCn: "卓予涵",
+  nameEn: "Zhuo Yuhan",
+  sloganCn: "境随心转",
+  sloganEn: "As the heart turns, the world turns with it.",
+
+  birthday: "2008-02-22",   // 生日，用于自动计算年龄 / birthday for auto age
+  currentStage: null,        // 手动覆盖当前阶段（例如 "大学 · 大一"），填了就优先用它；null = 自动
+  totalYears: 100,           // 进度条按 100 岁折算
+
+  // 阶段节点（用于打刻度 + 高亮当前阶段）
+  stages: [
+    { key: "child",   cn: "童年", en: "Childhood",   start: 0,  end: 6   },
+    { key: "primary", cn: "小学", en: "Primary",     start: 6,  end: 12  },
+    { key: "junior",  cn: "初中", en: "Junior High", start: 12, end: 15  },
+    { key: "senior",  cn: "高中", en: "Senior High", start: 15, end: 18  },
+    { key: "college", cn: "大学", en: "University",  start: 18, end: 22  },
+    { key: "work",    cn: "工作", en: "Career",      start: 22, end: 60  },
+    { key: "future",  cn: "未来", en: "Ahead",       start: 60, end: 100 }
+  ]
+};
+
+/* ============================================================
+   小工具 / helpers
+   ============================================================ */
+const $  = (sel, root = document) => root.querySelector(sel);
+const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+
+/** 精确年龄（岁，带小数） */
+function calcAge(birthdayStr, now = new Date()) {
+  const b = new Date(birthdayStr + "T00:00:00");
+  if (isNaN(b.getTime())) return null;
+  const ms = now - b;
+  if (ms <= 0) return 0;
+  const yearMs = 365.2425 * 24 * 3600 * 1000;
+  return ms / yearMs;
+}
+
+/** 18.7 岁 → 18 岁 8 个月 */
+function ageWords(age) {
+  const years = Math.floor(age);
+  const months = Math.floor((age - years) * 12);
+  return { years, months };
+}
+
+/* ============================================================
+   进度条渲染 / progress bar
+   ============================================================ */
+function renderLife() {
+  const age = calcAge(CONFIG.birthday);
+  if (age == null) {
+    $("#life-now-cn").textContent = "生日格式有误 / birthday format error";
+    return;
+  }
+
+  const percent = Math.max(0, Math.min(100, (age / CONFIG.totalYears) * 100));
+  const { years, months } = ageWords(age);
+
+  // 自动判断所处阶段
+  const auto = CONFIG.stages.find(s => age >= s.start && age < s.end) || CONFIG.stages[CONFIG.stages.length - 1];
+  const stageCn = CONFIG.currentStage || auto.cn;
+  const stageEn = CONFIG.currentStage ? "" : auto.en;
+
+  // 填充 + 小人位置
+  const fill = $("#life-fill");
+  const walker = $("#life-walker");
+  requestAnimationFrame(() => {
+    fill.style.width = percent.toFixed(2) + "%";
+    walker.style.left = percent.toFixed(2) + "%";
+  });
+
+  $("#life-bar").setAttribute("aria-label",
+    "人生进度条：已完成 " + percent.toFixed(1) + "%，当前 " + stageCn +
+    " / Life progress: " + percent.toFixed(1) + " percent");
+
+  // 文案
+  $("#life-now-cn").innerHTML =
+    years + " 岁 " + months + " 个月 · " + stageCn + " · 已走过人生的 " +
+    '<span class="pct">' + percent.toFixed(1) + "%</span>";
+  $("#life-now-en").textContent =
+    years + " years " + months + " months · " + (stageEn || "") +
+    " · " + percent.toFixed(1) + "% of a hundred-year line.";
+
+  // 刻度
+  const ticks = $("#life-ticks");
+  ticks.innerHTML = "";
+  CONFIG.stages.forEach(s => {
+    [s.start, s.end].forEach((v, i) => {
+      if (i === 1 && v >= CONFIG.totalYears) return;
+      const t = document.createElement("span");
+      t.className = "life-tick" + (s.key === auto.key ? " major" : "");
+      t.style.left = (v / CONFIG.totalYears * 100) + "%";
+      t.title = v + " 岁 / age " + v;
+      ticks.appendChild(t);
+    });
+  });
+
+  // 阶段 chips
+  const chips = $("#stage-chips");
+  chips.innerHTML = "";
+  CONFIG.stages.forEach(s => {
+    const c = document.createElement("span");
+    c.className = "stage-chip" + (s.key === auto.key ? " on" : "");
+    c.textContent = s.cn + " · " + s.en;
+    chips.appendChild(c);
+  });
+}
+
+/* ============================================================
+   层级切换 / layer navigation
+   ============================================================ */
+const LAYERS = { cover: "#layer-cover", tree: "#layer-tree", detail: "#layer-detail" };
+let currentLayer = "cover";
+
+function showLayer(name, hash) {
+  const el = $(LAYERS[name]);
+  if (!el) return;
+  $$(".layer").forEach(l => l.classList.remove("is-active"));
+  el.classList.add("is-active");
+  currentLayer = name;
+  if (hash) {
+    try { history.replaceState(null, "", "#" + hash); } catch (err) { /* file:// 下可能被拒绝，忽略 */ }
+  }
+  window.scrollTo({ top: 0, behavior: "smooth" });
+  // 切换后把焦点交给新层容器，方便键盘与读屏用户（不在按钮上画焦点框）
+  el.setAttribute("tabindex", "-1");
+  setTimeout(() => el.focus({ preventScroll: true }), 120);
+}
+
+const BRANCH_INFO = {
+  personality: { cn: "性格",     en: "PERSONALITY", dimoo: "images/dimoo/dflight_0_2.png" },
+  hobby:       { cn: "爱好",     en: "HOBBIES",     dimoo: "images/dimoo/dspring_0_0.png" },
+  journey:     { cn: "人生经历", en: "LIFE SO FAR", dimoo: "images/dimoo/dflight_3_0.png" },
+  future:      { cn: "未来规划", en: "WHAT'S NEXT", dimoo: "images/dimoo/dbeige_3_2.png" }
+};
+
+function openBranch(key) {
+  const info = BRANCH_INFO[key];
+  if (!info) return;
+  $$(".branch-page").forEach(p => {
+    p.hidden = p.dataset.page !== key;
+  });
+  $("#page-title").innerHTML = info.cn + "<span>" + info.en + "</span>";
+  $("#page-dimoo").src = info.dimoo;
+  $("#page-dimoo").alt = info.cn + "分支的 Dimoo 挂饰 / Dimoo ornament of this branch";
+  showLayer("detail", key);
+}
+
+/* ============================================================
+   事件绑定 / events
+   ============================================================ */
+$("#enter-btn").addEventListener("click", () => showLayer("tree", "tree"));
+
+$$("[data-goto]").forEach(btn => {
+  btn.addEventListener("click", () => openBranch(btn.dataset.goto));
+});
+
+$$("[data-back]").forEach(btn => {
+  btn.addEventListener("click", () => showLayer(btn.dataset.back, btn.dataset.back === "cover" ? "" : "tree"));
+});
+
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape") {
+    if (currentLayer === "detail") showLayer("tree", "tree");
+    else if (currentLayer === "tree") showLayer("cover", "");
+  }
+});
+
+/* 会说话的 Dimoo 头部 / talking heads */
+const PET_LINES = {
+  cat: [
+    ["今天也要好好吃饭哦。", "Eat something good today, okay?"],
+    ["抢票记得提前五分钟。", "For ticket drops, be five minutes early."],
+    ["别怕，先走进这棵树看看。", "Don't worry — just step into the tree."],
+    ["累了就发一会儿呆。", "If you're tired, just stare at nothing for a while."]
+  ],
+  dog: [
+    ["境随心转，是真的。", "The world really does follow your heart."],
+    ["你才走了百分之十八，慢慢来。", "You're only 18% in. Plenty of time."],
+    ["拍得挺好的，继续拍。", "Your photos are good — keep shooting."],
+    ["要不要去弹一会儿琴？", "How about playing the piano for a bit?"]
+  ]
+};
+
+$$("[data-pet]").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const key = btn.dataset.pet;
+    const bubble = $('[data-bubble="' + key + '"]');
+    const lines = PET_LINES[key];
+    const pick = lines[Math.floor(Math.random() * lines.length)];
+    bubble.querySelector(".txt-cn").textContent = pick[0];
+    bubble.querySelector(".txt-en").textContent = pick[1];
+    const isOpen = bubble.classList.contains("is-open");
+    $$(".pet-bubble").forEach(b => b.classList.remove("is-open"));
+    if (!isOpen) bubble.classList.add("is-open");
+  });
+});
+
+/* 点空白处收起气泡 */
+document.addEventListener("click", e => {
+  if (!e.target.closest("[data-pet]") && !e.target.closest(".pet-bubble")) {
+    $$(".pet-bubble").forEach(b => b.classList.remove("is-open"));
+  }
+});
+
+/* ============================================================
+   启动 / boot —— 支持用 #tree / #hobby 这样的链接直接进入某一层
+   ============================================================ */
+renderLife();
+setInterval(renderLife, 1000 * 60 * 60); // 每小时刷新一次，年龄永远是对的
+
+(function bootFromHash() {
+  const key = (location.hash || "").replace("#", "").trim();
+  if (!key) return;
+  if (BRANCH_INFO[key]) openBranch(key);
+  else if (key === "tree") showLayer("tree");
+})();
+</script>
+</body>
+</html>
+
